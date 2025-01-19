@@ -240,3 +240,222 @@ Archiving and Compressing Files
 
  The command tar xzf nmap-7.70.tar.gz is used in Linux to extract the contents of a compressed tarball file named nmap-7.70.tar.gz.
 
+
+## navigating the linux file system 
+
+Cd  
+
+Ls 
+
+Pwd 
+
+Mkdir 
+
+Touch 
+
+Nano file1 
+
+Cp file1 newdata/ 
+
+Cp file* newdata/        all files named file copied to newdata/ 
+
+Rm file?      it remove all file with name file and single digit 
+
+Suppose we have file1 file2 file3 file12 file13 , when we run this command then file12 and file 13 still remain there. 
+##
+Rm file* 
+
+This remove all file named file with any digit 
+
+ 
+##
+Mv ../file* .      this move all files from preve directory to current directory 
+
+Ls  
+then we can see all moved files in here 
+##
+Rmdir newdata/   it remove directory called newdata . 
+
+ 
+##
+Locate adduser 
+
+The locate command in Linux is used to quickly find files or directories on your system. 
+##
+Sudo updatedb 
+
+The sudo updatedb command updates the locate database on your Linux system. This database is used by the locate command to quickly search for files and directories. 
+##
+/var/log/syslog 
+
+The /var/log/syslog file is a log file in Linux systems that contains general system activity logs, including messages from the kernel, system services, and various software. It is one of the most important log files for monitoring and troubleshooting system events. 
+
+ 
+##
+Cat /etc/group | grep ubuntu 
+
+Cat /etc/group | grep ubuntu >> newfile 
+
+Cat newfile 
+
+The /etc/group file is a configuration file in Linux systems that defines the groups on the system. It contains information about user groups and their associated members. 
+
+Purpose of /etc/group 
+
+    Groups: A group is a collection of users. Groups are used to assign permissions for files and directories to multiple users at once, rather than individually. 
+
+    Group Membership: The file contains the list of users that belong to each group. 
+
+ 
+
+Example /etc/group File 
+
+root:x:0:root 
+
+    Group name: root 
+
+    Group password: x (not used) 
+
+    GID: 0 (ID for the root group, typically the primary administrative group) 
+
+    Members: root 
+
+ 
+
+| grep ubuntu: 
+
+The pipe (|) sends the output of the cat /etc/group command to grep, which searches through the output for the string ubuntu. 
+
+    grep ubuntu filters and only shows lines that contain the string ubuntu. This can match group names, group members, or any part of the line with "ubuntu". 
+
+>> newfile: 
+
+The >> operator appends the output of the previous command to a file named newfile. If newfile doesn't exist, it will be created. 
+
+    Append: >> ensures that the output is added to the end of the file rather than overwriting the file. If you used >, it would overwrite the file. 
+
+ 
+
+Cat /etc/group | grep ubuntu > newfile 
+
+ 
+
+> newfile: 
+
+The > operator redirects the output of the previous command to a file named newfile. 
+
+    Overwrite: If newfile already exists, it will be overwritten with the new content. If it doesn't exist, it will be created. 
+
+## 
+
+Head /etc/group 
+
+will display the first 10 lines of the /etc/group file, similar to: 
+
+root:x:0:root 
+
+daemon:x:1:daemon 
+
+bin:x:2:bin,sys 
+
+sys:x:3:sys 
+
+adm:x:4:syslog 
+
+tty:x:5:tty 
+
+staff:x:6:staff 
+
+lp:x:7:lp 
+
+disk:x:8:disk 
+
+games:x:9:games 
+
+ 
+
+## 
+
+Tail /etc/group 
+
+Print last 10 lines 
+
+## 
+
+Cut –d :  -f3  /etc/group 
+
+the command cut -d : -f3 /etc/group is used to extract and display the third field from each line of the /etc/group file, where the fields are delimited by a colon (:). 
+
+Explanation: 
+
+    cut: The cut command is used to split a file into sections based on delimiters. 
+
+    -d :: This option tells cut to use a colon (:) as the delimiter between fields. 
+
+    -f3: This option specifies that you want to extract the third field (the Group ID (GID)) from each line. 
+
+    /etc/group: This is the file being processed, which contains information about system groups. 
+
+Example /etc/group Line: 
+
+root:x:0:root 
+
+daemon:x:1:daemon 
+
+bin:x:2:bin,sys 
+
+sys:x:3:sys 
+
+adm:x:4:syslog 
+
+Output: 
+
+Running cut -d : -f3 /etc/group will produce: 
+
+0 
+
+1 
+
+2 
+
+3 
+
+4 
+
+ 
+
+## 
+
+Cut –d :  -f3 /etc/group | sort  -n 
+
+Print values from small to large 
+
+## 
+
+Cut –d: -f3 /etc/group | sort –rn 
+
+Print values from large to small 
+
+## 
+
+ 
+
+Wc /etc/group 
+
+The command wc /etc/group is used to display the word count (i.e., the number of lines, words, and characters) in the /etc/group file. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
