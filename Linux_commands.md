@@ -2,9 +2,9 @@ General Commands
 
 Updating and Installing Packages
 
-Update the package list:
+## Update the package list:
 
-## sudo apt update
+ sudo apt update
 
 Sample Output:
 
@@ -14,9 +14,9 @@ Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
 ...
 Reading package lists... Done
 
-Install a package (e.g., info):
+## Install a package (e.g., info):
 
-## sudo apt install info
+ sudo apt install info
 
 Sample Output:
 
@@ -32,9 +32,9 @@ Do you want to continue? [Y/n]
 
 Getting Help and Documentation
 
-Manual pages for a command (e.g., wget):
+## Manual pages for a command (e.g., wget):
 
-## man wget
+ man wget
 
 Sample Output:
 
@@ -46,9 +46,9 @@ NAME
 SYNOPSIS
     wget [option]... [URL]...
 
-Display help for wget directly:
+## Display help for wget directly:
 
-## wget --help
+ wget --help
 
 Sample Output:
 
@@ -60,24 +60,28 @@ Mandatory arguments to long options are mandatory for short options too.
   -V,  --version          display the version of Wget and exit
   -h,  --help             print this help
 
-Pipe the help output to less for easier navigation:
+## Pipe the help output to less for easier navigation:
 
-## wget --help | less
+ wget --help | less
 
 Sample Output:
 (Scrollable text; press q to exit.)
 
-Determine the type of wget:
+## Determine the type of wget:
 
-## type wget
+ type wget
+
+ it will tell you where the wget command is located in your system, specifically the path to the binary file that gets executed when you type wget.
 
 Sample Output:
 
 wget is /usr/bin/wget
 
-Search for details about wget using info:
+## info then type / then type on search wget 
 
-## info wget
+## Search for details about wget using info:
+
+ info wget
 
 Sample Output:
 
@@ -90,33 +94,30 @@ GNU Wget is a free utility for non-interactive download of files from the Web.
 
 File and Directory Management
 
-Change directory:
+## Change directory:
 
 cd
 
-Sample Output:
 
-(No output; changes to the home directory.)
+## List files in a directory:
 
-List files in a directory:
-
-## ls
+ ls
 
 Sample Output:
 
 Documents  Downloads  Pictures  Videos
 
-Show hidden files:
+## Show hidden files:
 
-## ls -a
+ ls -a
 
 Sample Output:
 
 .  ..  .bashrc  .profile  Documents  Downloads
 
-Display detailed file information:
+## Display detailed file information:
 
-## ls -l
+ ls -l
 
 Sample Output:
 
@@ -125,7 +126,7 @@ drwxr-xr-x 2 user user 4096 Jan 19 11:22 Documents
 drwxr-xr-x 2 user user 4096 Jan 19 11:22 Downloads
 -rw-r--r-- 1 user user    0 Jan 19 11:23 example.txt
 
-Display human-readable file sizes:
+## Display human-readable file sizes:
 
 ls -lh
 
@@ -136,9 +137,9 @@ drwxr-xr-x 2 user user 4.0K Jan 19 11:22 Documents
 drwxr-xr-x 2 user user 4.0K Jan 19 11:22 Downloads
 -rw-r--r-- 1 user user    0 Jan 19 11:23 example.txt
 
-List files sorted by time:
+## List files sorted by time:
 
-## ls -lht
+ ls -lht
 
 Sample Output:
 
@@ -149,12 +150,12 @@ drwxr-xr-x 2 user user 4.0K Jan 19 11:22 Documents
 
 Creating and Managing Files
 
-Create files with specific names:
+## Create files with specific names:
 
-## touch this_is_my_story
-## touch "this is my story"
-## touch another\ four\ word\ name
-## touch another-four-word-name
+ touch this_is_my_story
+ touch "this is my story"
+ touch another\ four\ word\ name
+ touch another-four-word-name
 
 Sample Output:
 
@@ -170,9 +171,9 @@ another-four-word-name  another four word name  this is my story  this_is_my_sto
 
 Networking Commands
 
-Display IP address information:
+## Display IP address information:
 
-## ip addr
+ ip addr
 
 Sample Output:
 
@@ -185,9 +186,9 @@ Sample Output:
     inet 192.168.1.100/24 brd 192.168.1.255 scope global dynamic eth0
        valid_lft 86394sec preferred_lft 86394sec
 
-Connect to a remote server via SSH:
+## Connect to a remote server via SSH:
 
-## ssh ubuntu@10.0.70.110
+ ssh ubuntu@10.0.70.110
 
 Sample Output:
 
@@ -199,9 +200,9 @@ ubuntu@10.0.70.110's password:
 
 Exploring System and User Files
 
-List the contents of /etc:
+## List the contents of /etc:
 
-## ls -l /etc
+ ls -l /etc
 
 Sample Output:
 
@@ -210,33 +211,32 @@ drwxr-xr-x 3 root root    4096 Jan 19 11:20 apache2
 -rw-r--r-- 1 root root     300 Jan 19 11:20 passwd
 ...
 
-View /etc/passwd file (contains user information):
+## View /etc/passwd file (contains user information):
 
-## cat /etc/passwd
+ cat /etc/passwd
 
 Sample Output:
 
 root:x:0:0:root:/root:/bin/bash
 user:x:1000:1000:User:/home/user:/bin/bash
 
-View .bashrc file (user shell configuration):
+## View .bashrc file (user shell configuration):
 
-## less .bashrc
+ less .bashrc
 
-View .profile file (user profile settings):
+## View .profile file (user profile settings):
 
-## less .profile
+ less .profile
 
-View /etc/profile file (global profile settings):
+## View /etc/profile file (global profile settings):
 
-## less /etc/profile
+ less /etc/profile
 
 Archiving and Compressing Files
 
-Extract a .tar.gz file:
+## Extract a .tar.gz file:
 
-## tar xzf nmap-7.70.tar.gz
+ tar xzf nmap-7.70.tar.gz
 
-Sample Output:
+ The command tar xzf nmap-7.70.tar.gz is used in Linux to extract the contents of a compressed tarball file named nmap-7.70.tar.gz.
 
-(No output; extracts files from the archive.)
