@@ -445,17 +445,311 @@ Wc /etc/group
 The command wc /etc/group is used to display the word count (i.e., the number of lines, words, and characters) in the /etc/group file. 
 
  
+## working with archives 
+
+ 
+
+## 
+
+Tar xzf latest.tar.gz 
+
+ 
+
+The command tar xzf latest.tar.gz is used in Linux to extract files from a compressed tar archive. 
+
+    tar: This is the command used to manipulate archive files in Linux. It can create, extract, and manage archives. 
+
+    x: This option tells tar to extract the contents of the archive. 
+
+    z: This option tells tar to decompress the archive using gzip, which is typically used for .gz compressed files. 
+
+    f: This option specifies the filename of the archive. It is followed by the name of the file you want to extract, which is latest.tar.gz in this case. 
+
+tar xzf latest.tar.gz extracts the contents of the compressed tar archive latest.tar.gz into the current directory. 
+ 
+
+ 
+## 
+
+tar czf newarchivetar.gz wordpress/ 
+
+ 
+
+The command tar czf newarchivetar.gz wordpress/ is used to create a compressed archive of the wordpress/ directory. Let’s break it down: 
+
+Command Breakdown: 
+
+    tar: This is the command for creating and manipulating tar archives. 
+
+    c: This option tells tar to create a new archive. 
+
+    z: This option instructs tar to compress the archive using gzip, which creates a .gz file. 
+
+    f: This option specifies that the filename of the archive follows. In this case, the archive will be named newarchivetar.gz. 
+
+    wordpress/: This is the directory that will be archived and compressed. 
+
+What the command does: 
+
+tar czf newarchivetar.gz wordpress/ creates a gzip-compressed tar archive named newarchivetar.gz that contains the contents of the wordpress/ directory. 
+
+ 
+
+## 
+
+Tar cf largerarchive .tar wordpress/ 
+
+If we miss out z then  
+
+Gzip largerarchive.tar 
+
+ 
+
+This creates a non-compressed tar archive (largerarchive.tar) of the entire wordpress/ directory, preserving its structure and contents. 
+ 
+
+ 
+    gzip: A command-line tool used to compress files using the gzip algorithm. 
+
+    largerarchive.tar: The file to be compressed. 
+
+What Happens: 
+
+    The file largerarchive.tar is compressed and renamed automatically to largerarchive.tar.gz. 
+
+    The original largerarchive.tar file is replaced by its compressed version. 
 
  
 
  
 
- 
+After running both commands, you will have a compressed archive named largerarchive.tar.gz that contains the wordpress/ directory. 
 
  
 
- 
+Unzip akismit.4.1.zip 
+
+    unzip: The command used to extract files from a .zip archive. 
+
+    akismit.4.1.zip: The name of the ZIP file you want to extract. 
 
  
 
+Zip newname,zip * 
+    ip: The command to create ZIP archives. 
+
+    newname.zip: The name of the ZIP file to be created. 
+
+    *: A wildcard that matches all files in the current directory (but not directories unless additional options are specified). 
+
+##Linux kernal modules and peripherals  
+
+## 
+
+Lsusb 
+The lsusb command in Linux is used to display information about USB devices connected to your system. It's especially useful for troubleshooting USB-related issues and for identifying devices. 
+
  
+
+## 
+
+lspci 
+
+The lspci command in Linux is used to display information about all PCI (Peripheral Component Interconnect) devices connected to your system. These devices include things like graphics cards, network adapters, sound cards, USB controllers, etc. 
+
+ 
+
+## lshw 
+
+The sudo lshw command in Linux is used to display detailed information about the hardware configuration of the system. It provides comprehensive details about the CPU, memory, storage, network interfaces, and other components. 
+
+## 
+/lib/modules 
+
+The /lib/modules directory in Linux is a critical part of the operating system. It contains the kernel modules (device drivers and other loadable kernel features) for the installed Linux kernel(s). 
+
+ 
+
+## 
+
+Uname  –r  
+The uname -r command in Linux is used to display the kernel version of the currently running operating system. 
+
+ 
+
+## 
+
+ls /lib/modules/`uname -r` 
+
+    uname -r: Outputs the currently running kernel version. 
+
+    ls: Lists the contents of the /lib/modules/<kernel_version> directory. 
+
+ 
+
+The lsmod command in Linux is used to list all currently loaded kernel modules in your system. Kernel modules are pieces of code (like drivers) that can be loaded or unloaded into the kernel dynamically. 
+
+ 
+
+## 
+
+modprobe 
+
+The modprobe command in Linux is used to load or unload kernel modules. Kernel modules are pieces of code that can be dynamically loaded into the kernel to extend its functionality (such as device drivers or file system modules). 
+
+sudo modprobe nvidia 
+
+ 
+
+This command will load the nvidia kernel module, typically used for NVIDIA graphics cards. 
+
+ 
+
+sudo modprobe -r nvidia 
+
+ 
+
+This command will remove the nvidia kernel module. 
+
+ ##  Linux Network Connectivity 
+
+ 
+## 
+
+Ip route show 
+
+ 
+The ip route show command displays the routing table of your Linux system, showing how network packets are routed to their destinations. This includes information about gateways, network interfaces, and specific routing rules. 
+
+## 
+
+Route 
+
+In networking, route refers to the path that data packets take to travel from one device (source) to another (destination) across a network. The route is determined by a combination of the source, destination, and the intermediate devices (like routers). 
+
+## 
+
+Ifconfig 
+
+The ifconfig command is used in Linux to display or configure the network interfaces on your computer. It shows information about the active network interfaces (like Ethernet or Wi-Fi) on your system, such as their IP addresses, MAC addresses, and status (up or down). 
+
+## 
+
+Netstat  –i  
+ 
+
+The netstat -i command is used to display information about the network interfaces on your system, including the status of each interface, the number of packets received or transmitted, and various other metrics. It helps you monitor the network interface statistics, such as errors, dropped packets, and data transmission activity. 
+
+ 
+
+##DNS configuration 
+
+## 
+
+Host bootstrap-it.com 
+
+host bootstrap-it.com is used to perform a DNS lookup to retrieve the IP address associated with the domain name bootstrap-it.com. Essentially, it asks the system's DNS (Domain Name System) service to resolve the domain to its corresponding IP address. 
+
+## 
+
+Ping 
+
+The ping command in Linux is a network diagnostic tool used to check the connectivity between your computer and another device on the network (such as a server, another computer, or a router). It works by sending Internet Control Message Protocol (ICMP) echo request packets to the target and waits for an echo reply. This helps determine if the device is reachable and measures the round-trip time for messages sent from the source to the destination. 
+
+##   
+
+ /etc/resolve.conf 
+
+The /etc/resolv.conf file is where your Linux system stores DNS server information. It tells your computer which DNS servers to use when you try to access websites. 
+
+## 
+
+Systemd-resolve  --status 
+
+ 
+
+## 
+
+/etc/hosts 
+
+The file /etc/hosts on a Linux system is a simple configuration file used to map hostnames to IP addresses. It is typically used for local network resolution or as a fallback when DNS resolution fails. 
+
+ 
+
+##  
+
+/etc/ssh 
+
+The /etc/ssh directory contains configuration files for the SSH server and client. SSH is used to securely connect to remote machines over a network. 
+
+## 
+
+scp update-local.sh ubuntu@10.0.31.131 home/ubuntu 
+
+ 
+
+The scp command is used to securely copy files or directories between a local machine and a remote server, or between two remote servers, using SSH. 
+
+    scp: 
+
+    Stands for Secure Copy Protocol. 
+
+    It securely transfers files over SSH. 
+
+    update-local.sh: 
+
+    This is the local file you want to copy to the remote server. Ensure this file exists in your current working directory, or provide the full path to it. 
+
+    ubuntu@10.0.31.131: 
+
+    ubuntu: The username you use to log into the remote server. 
+
+    10.0.31.131: The IP address of the remote server. 
+
+    :/home/ubuntu: 
+
+    The destination path on the remote server where the file will be copied. 
+
+    The colon (:) separates the server information (ubuntu@10.0.31.131) from the file's destination path. 
+
+ 
+
+##Linux Scripting 
+
+## 
+
+Nano myscript.sh 
+
+ 
+
+#!/bin/bash 
+
+declare  -i number1 
+
+declare  -i number2 
+
+declare  -i total 
+
+ 
+
+echo “ enter number1?” 
+
+read number1 
+
+echo “enter number2” 
+
+read number2 
+
+total=$number1*$number2 
+
+echo “the product is ” $total 
+
+exit 0 
+
+ 
+
+Ls 
+
+chmod +x myscript.sh 
+
+./myscript.sh 
