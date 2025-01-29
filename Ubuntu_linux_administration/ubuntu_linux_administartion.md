@@ -1268,5 +1268,1123 @@ Breaking it Down:
     
     -rw-r--r--
     
-               
+#################       
+
+
+
+
+
+
+
+
+
+
+#######################
+
+
+
+
+##
+mkdir links
+ls -ld links/
+ls -ldi links/
+ls -ldi links/ links/.
+
+
+1. mkdir links
+
+    This command creates a directory named links in the current working directory. After running it, you will have a directory called links/.
+
+2. ls -ld links/
+
+    This lists details about the links/ directory itself (not its contents). The -l option provides a long listing format, and the -d option ensures the listing is for the directory itself, rather than its contents.
+    Example output:
+
+    drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/
+
+        2: The number 2 represents the number of hard links to the directory. A directory has at least two hard links: one for the directory itself (links/) and one for its entry in its parent directory (..).
+
+3. ls -ldi links/
+
+    This command lists the inode number and details for the links/ directory.
+    The -i option displays the inode number of the file or directory.
+    The -d option ensures that the listing is for the directory itself, rather than its contents.
+    Example output:
+
+    1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/
+
+        1234567: This is the inode number. Every file or directory on a filesystem has a unique inode, which stores metadata like ownership, permissions, and the disk location of the data.
+
+4. ls -ldi links/ links/.
+
+    This command lists the inode numbers and details for both the links/ directory and its . (current directory) entry. The . is a special entry within every directory that refers to the directory itself.
+    The output will show the inode number for both the links/ directory and the . entry, and they should have the same inode number.
+    Example output:
+
+    1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/
+    1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/.
+
+        1234567: Both the directory links/ and its . entry share the same inode number, indicating that they are linked to the same inode. This is because the . entry in a directory refers to the directory itself.
+
+Hard links in the context of directories:
+
+    A hard link is a reference to a file or directory by its inode number. In the case of directories, a hard link means that the directory has multiple references to it.
+    For any directory, at least two hard links exist:
+        One for the directory itself (e.g., links/).
+        One for its parent directory’s entry (..), which is used to reference the parent directory from within any subdirectory.
+    When you create additional hard links to a directory or file, the link count (2 in the example) will increase, showing how many references point to that inode.
+    
+    
+##
+mkdir links/d1
+ls -ldi links/ links/.
+ls ldi links/links/. links/d1/..
+
+
+1. mkdir links/d1
+
+    This command creates a subdirectory named d1 inside the links/ directory.
+    After running this command, the structure will look like:
+
+    links/
+    └── d1/
+
+2. ls -ldi links/ links/.
+
+    This command lists the inode number and details for the links/ directory and its . (current directory) entry.
+    Here’s the breakdown:
+        links/: This refers to the links/ directory itself.
+        links/.: This refers to the special . entry inside the links/ directory, which always points to the directory itself.
+
+Example output (assuming inode number 1234567 for both):
+
+1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/
+1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/.
+
+    The number 2 (the second column) indicates the link count for both links/ and links/.. This is because a directory has at least two hard links:
+        One for the directory itself (links/).
+        One for the . entry, which points to the directory itself from inside the directory.
+
+The inode number (1234567) for both links/ and links/. will be the same, showing that they both reference the same inode.
+3. ls -ldi links/links/. links/d1/..
+
+    This command lists the inode number and details for two things:
+        links/links/.: This is the . entry inside the links/links/ subdirectory. It points to the links/links/ directory itself.
+        links/d1/..: This is the .. entry inside the links/d1/ subdirectory. It points to the parent directory of links/d1/, which is links/.
+
+Let’s break this down:
+
+    links/links/.: This refers to the links/links/ directory itself, and its inode number should match the inode number of links/links/.
+    links/d1/..: This refers to the parent directory of links/d1/, which is links/. The .. entry is special, pointing to the parent directory, and the inode number for links/d1/.. will match the inode number of links/.
+
+Example output (assuming inode number 1234567 for both):
+
+1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/links/.
+1234567 drwxr-xr-x 2 user user 4096 Jan 28 12:00 links/d1/..
+
+    Both links/links/. and links/d1/.. share the same inode number (1234567), which points to the links/ directory.
+    
+    
+##
+ls -ld /etc
+drwxr-xr-x 138 root root 12288 Jan 26 17:21 /etc
+
+
+the default hardlink /etc and /etc .
+the except this remaining 136 hardlinks contain in /etc
+
+##
+/etc/ itself: This is the directory entry for /etc. It counts as one hard link.
+/etc/. (the . entry inside /etc): This is the special directory entry that points to the directory itself. The . entry always refers to the directory it is contained in. This counts as the second hard link.
+
+    
+    
+##
+cd links/
+echo hello > file1
+ln file1 file2
+ls -li
+cat file1 
+cat file2
+
+
+ 1. cd links/
+
+    This command changes the current working directory to links/. After running this, you will be inside the links/ directory, which is where you'll perform the rest of the operations.
+
+2. echo hello > file1
+
+    This command creates a new file named file1 in the links/ directory and writes the string hello into it.
+    The file file1 is created with the content hello, and its inode will be assigned. At this point, file1 has 1 hard link (itself).
+
+3. ln file1 file2
+
+    This command creates a hard link to file1 and names it file2.
+    A hard link means that both file1 and file2 will point to the same inode. This means they share the same data, and changes made to one will be reflected in the other.
+    After running this command:
+        file1 and file2 now point to the same inode, which holds the content hello.
+        The link count for this inode increases to 2, as both file1 and file2 are referencing the same underlying data.
+
+4. ls -li
+
+    The ls -li command lists the files in the current directory (links/) along with their inode numbers.
+    The -i option shows the inode number of each file, and the -l option gives detailed information (including the link count).
+
+Example output:
+
+1234567 -rw-r--r-- 2 user user 6 Jan 28 12:00 file1
+1234567 -rw-r--r-- 2 user user 6 Jan 28 12:00 file2
+
+    1234567: This is the inode number for both file1 and file2, showing that they point to the same data.
+    2: This is the link count, which shows how many hard links are pointing to the inode. Since file1 and file2 are hard links to the same inode, the link count is 2.
+
+5. cat file1
+
+    This command displays the contents of file1. Since file1 contains hello, the output will be:
+
+    hello
+
+6. cat file2
+
+    This command displays the contents of file2. Since file2 is a hard link to file1, it points to the same inode and data. Therefore, the output will also be:
+
+hello
+
+##
+rm file1
+cat file2
+
+
+1. rm file1
+
+    This command deletes file1 from the filesystem.
+    However, since file1 and file2 are hard links to the same inode (the same underlying data), deleting file1 does not delete the actual data. The inode and data are still intact because file2 is still pointing to it.
+    After running this command, the link count for the inode will decrease by 1. If the link count was 2 (before the deletion), it will now be 1.
+
+2. cat file2
+
+    Since file2 still exists and is pointing to the same inode (the same data) as file1 did, running cat file2 will still show the contents of the file.
+    The output will be:
+
+hello
+
+
+##
+ln -s /usr/share/doc .
+ls -l
+cd doc
+pwd
+pwd -P
+cd ..
+ls
+
+
+1. ln -s /usr/share/doc .
+
+    This command creates a symbolic link (symlink) named doc in the current directory (.) that points to /usr/share/doc.
+    ln -s is used to create a symbolic (or soft) link. Unlike hard links, symbolic links can link to directories or files across different filesystems, and they contain a reference to the target's path.
+    After this command, in the current directory, you’ll have a symlink called doc, which points to /usr/share/doc.
+
+2. ls -l
+
+    This command lists the files and directories in the current directory with detailed information (permissions, links, owner, group, size, modification time, and name).
+    After creating the symlink, you’ll see an entry for the doc symlink, similar to this:
+
+    lrwxrwxrwx 1 user user 21 Jan 28 12:00 doc -> /usr/share/doc
+
+    l at the beginning indicates that this is a symlink.
+    rwxrwxrwx shows the permissions (read, write, execute for everyone).
+    The 21 is the length of the symlink (the number of characters in the path /usr/share/doc).
+    The doc -> /usr/share/doc part shows that the symlink doc points to /usr/share/doc.
+
+3. cd doc
+
+    This command changes the current directory to doc. Since doc is a symlink to /usr/share/doc, you’ll be taken to /usr/share/doc when you run this command.
+
+4. pwd
+
+    pwd (print working directory) shows the absolute path of the current directory.
+    If you ran this after cd doc, you would see:
+
+    /usr/share/doc
+
+    This is because doc is a symbolic link to /usr/share/doc, and when you cd into it, you are taken to the target of the symlink.
+
+5. pwd -P
+
+    pwd -P shows the physical path (without following symbolic links).
+    When you run pwd -P inside /usr/share/doc (after following the symlink doc), the output will be:
+
+    /usr/share/doc
+
+    In this case, it looks the same because /usr/share/doc is the actual physical directory, not a symlink. However, if you had been inside a directory that was a symlink itself, pwd -P would show the actual physical directory path, not the symlink path.
+
+6. cd ..
+
+    This command moves you up one level in the directory structure. Since you’re in /usr/share/doc, after running cd .., you will be moved to /usr/share.
+
+7. ls
+
+    This command lists the contents of the current directory (/usr/share after cd ..).
+    You should see an entry for doc (the symlink you created earlier), along with other files and directories that exist in /usr/share.
+    
+    
+    
+    
+##
+ln -s /usr/share/doc .
+ls -l
+cd doc
+pwd
+/home/vagrant/links/doc
+pwd -P
+cd ..
+ls
+
+1. ln -s /usr/share/doc .
+
+    This command creates a symbolic link named doc in the current directory (.) that points to /usr/share/doc.
+    ln -s is used to create a symbolic (or soft) link, which is different from a hard link. A symbolic link contains a reference to the path of the target file or directory.
+
+In this case, you’re creating a symlink called doc, which points to /usr/share/doc.
+2. ls -l
+
+    This command lists the files and directories in the current directory with detailed information.
+    After running ln -s, you would see something like this:
+
+    lrwxrwxrwx 1 user user 21 Jan 28 12:00 doc -> /usr/share/doc
+
+    l at the start indicates that this is a symbolic link.
+    The number 21 is the length of the target path (/usr/share/doc).
+    doc -> /usr/share/doc indicates that the doc symlink points to /usr/share/doc.
+
+3. cd doc
+
+    This command changes the current directory to doc. Since doc is a symbolic link pointing to /usr/share/doc, you will now be inside /usr/share/doc (the target directory).
+
+4. pwd
+
+    pwd shows the absolute path of the current directory.
+    After running cd doc, you’ll see:
+
+    /home/vagrant/links/doc
+
+    This is the symlink's path in the current directory (/home/vagrant/links/doc). This path is where the symlink resides, not the target path of the symlink.
+
+5. pwd -P
+
+    pwd -P shows the physical path of the current directory (i.e., without following symlinks).
+    When you run pwd -P after cd doc, the output will be:
+
+    /usr/share/doc
+
+    This shows the actual physical directory where the symlink points (the target path), which is /usr/share/doc.
+
+6. cd ..
+
+    This command moves you up one level in the directory structure. Since you’re inside /usr/share/doc, running cd .. will move you up to /usr/share.
+
+7. ls
+
+    This command lists the contents of the current directory, which is now /usr/share.
+    You will see an entry for doc (the symlink) pointing to /usr/share/doc, as well as other files and directories in /usr/share.
+
+What Are Symbolic Links?
+
+A symbolic link (or symlink) is a special type of file that acts as a reference or pointer to another file or directory. Symlinks are often used to create shortcuts or links to files and directories located in different places in the filesystem.
+Why Use Symbolic Links?
+
+Symbolic links are useful in several situations:
+
+    Shortcuts: They allow you to create a shortcut to a file or directory without having to duplicate the data.
+    Cross-filesystem links: Unlike hard links, symlinks can link to files or directories on different filesystems.
+    Managing Configurations: Symlinks are often used for configuration files. For example, linking a configuration file in a common directory (like /etc/) to a specific file or directory elsewhere on the system.
+    Ease of access: They make it easier to access deeply nested files or directories by creating a simpler, shorter path.
+
+Size of a Symbolic Link
+
+The size of a symbolic link is relatively small, typically depending on the length of the target path it points to. For example:
+
+    If the target is /usr/share/doc, the symlink will store this path.
+    The size of the symlink is the length of the target path plus some additional space for the symlink's metadata. Typically, the size of a symlink is around 20 to 100 bytes, depending on the length of the path.
+
+For example, in the ls -l output, you might see something like this:
+
+lrwxrwxrwx 1 user user 21 Jan 28 12:00 doc -> /usr/share/doc
+
+    The length of the symlink is 21 bytes, as it stores the 21 characters of /usr/share/doc.
+
+Key Differences Between Symlinks and Hard Links:
+
+    Symlinks:
+        Can link to files and directories across different filesystems.
+        Can be used to link to non-existent files (broken symlink).
+        Can be identified by ls -l with an l at the beginning.
+        Can have a size depending on the length of the target path.
+
+    Hard Links:
+        Can only link to files, not directories.
+        Cannot span across different filesystems.
+        They are indistinguishable from the original file (no special marker like l in ls -l).
+        Do not have a size related to the target path; they share the same inode as the original file.
+        
+        
+        
+##
+ln -s file2 file3
+ls -l
+cat file3
+
+Let’s go through each command and explain what’s happening:
+1. ln -s file2 file3
+
+    This command creates a symbolic link (symlink) named file3 that points to file2.
+    ln -s is used to create a symbolic link (also known as a soft link), where file3 will not contain the actual data of file2, but instead will store the path to file2.
+    After this command, file3 becomes a symlink pointing to file2. Any operation on file3 will be redirected to file2 because it references the path of file2.
+
+2. ls -l
+
+    This command lists the files and directories in the current directory with detailed information (permissions, links, owner, group, size, modification time, and name).
+    After creating the symbolic link, you’ll see something like this:
+
+    -rw-r--r-- 1 user user 123 Jan 28 12:00 file2
+    lrwxrwxrwx 1 user user  5 Jan 28 12:01 file3 -> file2
+
+    -rw-r--r--: This shows the regular file file2 with read and write permissions for the owner, and read permissions for others.
+    lrwxrwxrwx: This shows that file3 is a symbolic link (the l at the start), with read, write, and execute permissions for everyone (since it is a symlink).
+    file3 -> file2: The -> file2 part shows that file3 is pointing to file2.
+
+3. cat file3
+
+    cat file3 will display the contents of file3. Since file3 is a symlink to file2, this command will show the contents of file2.
+    The cat command will follow the symlink file3 and display whatever is inside file2, because file3 is just a pointer to file2.
+    
+    
+If file2 contains the text:
+
+Hello, this is file2!
+
+Then when you run cat file3, you will see:
+
+    Hello, this is file2!
+
+This demonstrates how symbolic links work by redirecting operations to the target file.
+
+##
+
+vim file3
+cat file2
+
+
+1. vim file3
+
+    Since file3 is a symbolic link pointing to file2, when you run vim file3, you are actually editing file2 (because file3 redirects to file2).
+    In Vim, you can make changes to file2 through file3. Any edits made in vim file3 will affect file2, as both file3 and file2 are essentially pointing to the same file data.
+    Example: If file2 originally contains:
+
+Hello, this is file2!
+
+and you change it to:
+
+    Hello, this is modified file2!
+
+    Then the change will be saved to file2.
+
+2. cat file2
+
+    After editing file3 (which edits file2), running cat file2 will display the contents of file2 (which were modified via file3).
+    If you changed the contents of file2 through vim file3, then cat file2 will now show the updated content.
+    Example: After editing file2 through file3 to say:
+
+Hello, this is modified file2!
+
+Running cat file2 will display:
+
+Hello, this is modified file2!
+
+##file permissions in linux
+
+* read =4 in octal and  100 in binary
+read a file or list directory content
+* write = 2 in octal and 010 in binary
+create or delate files in directories , write to existing files 
+* execute = 1 in octal and 001 in bainary
+enter a directoy or execute program or script 
+
+* default permissions for files = 666
+* default permissions for derectories =777
+
+ 
+* the current umask value afftect default permissions  002
+
+The umask (user file creation mask) is a setting that determines the default file permissions for newly created files and directories. It acts as a mask, restricting certain permissions by "removing" permissions from the default values.
+What Does umask 002 Mean?
+
+The umask value is typically a three-digit number, where each digit corresponds to a set of permissions for the owner, group, and others respectively. The umask value subtracts permission bits from the default values of 666 (for files) and 777 (for directories).
+
+Here’s a breakdown of the umask value 002:
+Default Permissions:
+
+    For files: 666 (rw-rw-rw-)
+    For directories: 777 (rwxrwxrwx)
+
+The umask value 002 means:
+
+    Owner (user): No restrictions (default permissions are preserved).
+    Group: Remove write permissions.
+    Others: Remove write permissions.
+
+File Permissions Calculation:
+
+    File permissions (666) - umask (002) = 664
+        664 means: rw-rw-r-- (read and write permissions for owner and group, read-only for others).
+    Directory permissions (777) - umask (002) = 775
+        775 means: rwxrwxr-x (read, write, and execute permissions for owner and group, read and execute for others).
+
+Detailed Explanation:
+
+    Owner (user): The owner of the file or directory will have read, write, and execute permissions for directories (rwx), and read and write permissions for files (rw-).
+    Group: The group will have read and write permissions for files and directories, but no execute permission for files. For directories, execute permission (search permission) is retained.
+    Others: Others will have read-only permission for files and read and execute permission for directories.
+
+Example of Permissions:
+
+    If you create a file with umask 002, it will have 664 permissions (rw-rw-r--), meaning the owner and group can read and write, while others can only read.
+    If you create a directory with umask 002, it will have 775 permissions (rwxrwxr-x), meaning the owner and group can read, write, and execute, while others can read and execute, but cannot modify or create files inside the directory.
+
+Summary:
+
+    The umask 002 means:
+        Files: Default permissions are rw-rw-r-- (664), where the owner and group have read and write access, and others have read-only access.
+        Directories: Default permissions are rwxrwxr-x (775), where the owner and group have full access (read, write, execute), and others can read and execute, but not write.
+        
+##
+umask
+0002
+touch f1
+ls -l f1
+mkdir dirone
+ls -ld dirone
+umask 0
+umask
+
+
+1. umask
+
+    The umask command shows the current umask value, which defines the default permissions for new files and directories.
+    In your case, you are setting the umask to 0002, which affects the default file and directory permissions for newly created files and directories.
+
+2. umask 0002
+
+    umask 0002 sets the current umask value to 0002. This means:
+        Owner: No restrictions (full permissions are allowed).
+        Group: No restrictions (full permissions are allowed).
+        Others: Write permission is removed, allowing only read and execute permissions.
+    As a result, new files will have 664 permissions (rw-rw-r--), and new directories will have 775 permissions (rwxrwxr-x).
+
+3. touch f1
+
+    The touch f1 command creates an empty file named f1. Since the umask is 0002, the default file permissions will be 664 (rw-rw-r--).
+    This means:
+        Owner has read and write permissions (rw-).
+        Group has read and write permissions (rw-).
+        Others have read-only permission (r--).
+
+4. ls -l f1
+
+    The ls -l f1 command lists the detailed information about f1. After creating f1 with umask 0002, you should see something like:
+
+    -rw-rw-r-- 1 user group 0 Jan 28 12:00 f1
+
+    The file f1 has 664 permissions (rw-rw-r--), meaning:
+        Owner: read/write (rw-).
+        Group: read/write (rw-).
+        Others: read-only (r--).
+
+5. mkdir dirone
+
+    The mkdir dirone command creates a directory named dirone. Since the umask is 0002, the default directory permissions will be 775 (rwxrwxr-x).
+    This means:
+        Owner has read, write, and execute permissions (rwx).
+        Group has read, write, and execute permissions (rwx).
+        Others have read and execute permissions, but not write (r-x).
+
+6. ls -ld dirone
+
+    The ls -ld dirone command lists the detailed information about the directory dirone. After creating dirone with umask 0002, you should see something like:
+
+    drwxrwxr-x 2 user group 4096 Jan 28 12:00 dirone
+
+    The directory dirone has 775 permissions (rwxrwxr-x), meaning:
+        Owner: read, write, and execute (rwx).
+        Group: read, write, and execute (rwx).
+        Others: read and execute (r-x).
+
+7. umask 0
+
+    umask 0 sets the umask value to 0000, which means there are no restrictions on the default permissions for newly created files and directories.
+    As a result, new files will have 666 permissions (rw-rw-rw-), and new directories will have 777 permissions (rwxrwxrwx).
+
+8. umask
+
+    The umask command, after setting it to 0, shows the current umask value, which will now be 0000.
+    This means no permissions will be removed when creating files or directories, so the default permissions for files will be 666 (rw-rw-rw-), and for directories, it will be 777 (rwxrwxrwx).
+    
+##
+
+touch f2
+ls -l f2
+mkdir dirtwo
+ls -ld dirtwo
+umask 077
+touch f3
+ls -l f3
+
+
+1. touch f2
+
+    The touch f2 command creates an empty file named f2.
+    Since no umask value has been explicitly set yet, the default umask applies.
+    Default umask is typically 022 for most systems, so the resulting permissions for the file will be 644 (rw-r--r--).
+        Owner: Read and write (rw-).
+        Group: Read-only (r--).
+        Others: Read-only (r--).
+    After running this command, you can check the permissions with ls -l f2:
+
+    -rw-r--r-- 1 user user 0 Jan 28 12:00 f2
+
+2. ls -l f2
+
+    The ls -l f2 command lists detailed information about the file f2.
+    The permissions will be shown as 644 (rw-r--r--), where:
+        The owner (user) can read and write the file.
+        The group and others can only read the file.
+
+3. mkdir dirtwo
+
+    The mkdir dirtwo command creates a directory named dirtwo.
+    Directories typically have 777 permissions (rwxrwxrwx) by default.
+    Default umask is 022, so the resulting directory permissions will be 775 (rwxrwxr-x).
+        Owner: Full permissions (rwx).
+        Group: Full permissions (rwx).
+        Others: Read and execute permissions (r-x), but no write access.
+
+4. ls -ld dirtwo
+
+    The ls -ld dirtwo command lists detailed information about the directory dirtwo.
+    The permissions will be shown as 775 (rwxrwxr-x), where:
+        The owner (user) can read, write, and execute inside the directory.
+        The group can also read, write, and execute inside the directory.
+        Others can read and execute (search and list contents), but cannot modify or create files inside the directory.
+
+5. umask 077
+
+    The umask 077 command sets the umask value to 077.
+        This means:
+            Owner: No permission restrictions (full permissions).
+            Group: No permission restrictions (full permissions).
+            Others: No read, write, or execute permissions.
+    With this umask, new files and directories will have more open permissions for the owner and group, but no permissions for others.
+
+6. touch f3
+
+    The touch f3 command creates an empty file named f3.
+    Since the umask is now 077, the default file permissions will be calculated as:
+        Default file permissions are 666 (rw-rw-rw-), and then the umask 077 removes read, write, and execute permissions for others.
+        The resulting permissions for f3 will be 660 (rw-rw----).
+            Owner: Read and write (rw-).
+            Group: Read and write (rw-).
+            Others: No permissions (---).
+
+7. ls -l f3
+
+    The ls -l f3 command lists detailed information about the file f3.
+    The permissions will be shown as 660 (rw-rw----), meaning:
+        The owner (user) has read and write permissions.
+        The group also has read and write permissions.
+        Others have no permissions at all.
+        
+        
+        
+##
+touch f2
+ls -l f2
+mkdir dirtwo
+ls -ld dirtwo
+umask 077
+touch f3
+ls -l f3
+
+
+Commands and Expected Output:
+
+    touch f2
+        This command creates an empty file named f2.
+        With the default umask (likely 022), the default file permissions for f2 will be 666 (rw-rw-rw-), and the umask removes write permissions for group and others, so the final permissions will be 644 (rw-r--r--).
+
+$ touch f2
+$ ls -l f2
+
+Expected Output:
+
+-rw-r--r-- 1 user user 0 Jan 28 12:00 f2
+
+Explanation: f2 has 644 permissions.
+
+    mkdir dirtwo
+        This command creates a directory named dirtwo.
+        By default, directory permissions are 777 (rwxrwxrwx), but the umask 022 removes write permissions for the group and others, so the resulting directory permissions will be 755 (rwxr-xr-x).
+
+$ mkdir dirtwo
+$ ls -ld dirtwo
+
+Expected Output:
+
+drwxr-xr-x 2 user user 4096 Jan 28 12:01 dirtwo
+
+Explanation: dirtwo has 755 permissions.
+
+    umask 077
+        The umask 077 command sets a new umask value, which means no permissions will be granted to the group and others.
+        The owner will still have full permissions (read, write, and execute).
+
+$ umask 077
+
+    touch f3
+        This creates an empty file named f3 with the umask 077 applied. The default permissions for files are 666 (rw-rw-rw-), and umask 077 removes all permissions for the group and others, resulting in 660 (rw-rw----) permissions.
+
+$ touch f3
+$ ls -l f3
+
+Expected Output:
+
+-rw-rw---- 1 user user 0 Jan 28 12:02 f3
+
+Explanation: f3 has 660 permissions (rw-rw----), where:
+
+    Owner: Read and write (rw-).
+    Group: Read and write (rw-).
+    Others: No permissions (---).
+
+Final Summary of Commands and Results:
+
+$ touch f2
+$ ls -l f2
+-rw-r--r-- 1 user user 0 Jan 28 12:00 f2
+
+$ mkdir dirtwo
+$ ls -ld dirtwo
+drwxr-xr-x 2 user user 4096 Jan 28 12:01 dirtwo
+
+$ umask 077
+
+$ touch f3
+$ ls -l f3
+-rw-rw---- 1 user user 0 Jan 28 12:02 f3
+
+Summary:
+
+    File f2: Created with 644 permissions (rw-r--r--).
+    Directory dirtwo: Created with 755 permissions (rwxr-xr-x).
+    File f3: Created with 660 permissions (rw-rw----) after applying umask 077.
+
+
+##
+To make the umask setting persist across sessions, you need to add the umask command to a login script. A login script is executed whenever you log into the system, and adding the umask command there will ensure that the desired umask value is automatically applied to all sessions.
+What This Means:
+
+    When you add a umask command to a login script, you are telling the system to apply a default umask value every time a user logs in. This ensures that the file and directory permissions are consistent across sessions, even if the default umask value is different.
+
+Common Login Scripts:
+
+    ~/.bash_profile or ~/.profile: For bash or sh shells (most common for Linux users).
+    ~/.bashrc: For interactive non-login bash shells.
+    
+    
+## chmod
+
+umask
+op:0002
+
+echo hello > new_file
+cat new_file
+op:
+hello
+ls -l new_file
+-rw-r--r-- 1 user group 6 Jan 28 10:00 new_file
+
+chmod -v 006 new_file
+   
+
+
+This command explicitly sets the permissions for the file new_file to 006.
+Breakdown of 006:
+
+    First digit (0): Special mode bits (not used here).
+    Second digit (0): Owner has no permissions.
+    Third digit (0): Group has no permissions.
+    Fourth digit (6): Others have read (4) and write (2) permissions.
+
+Result:
+
+    After running chmod -v 006 new_file, the permissions will change to:
+
+------rw- 1 user group 6 Jan 28 10:00 new_file
+
+This means:
+
+    Owner: No permissions (---).
+    Group: No permissions (---).
+    Others: Can read and write (rw-)
+    
+The -v option in the chmod command stands for verbose.
+
+When you use chmod -v, it provides detailed output about what changes were made to the file's permissions. Essentially, it displays a message confirming the change.
+Example:
+
+chmod -v 006 new_file
+
+Output:
+
+mode of 'new_file' changed from 0644 (rw-r--r--) to 0006 (------rw-)     
+    
+* cat new_file
+shows : permission deniedd
+    
+* chmod -v g=rw new_file
+op:
+mode of 'new_file' changed from 0006 (------rw-) to 0066 (----rw-rw-)
+
+    g=rw is a symbolic mode for chmod. It specifies:
+        g: Apply this change to the group permissions.
+        =: Set the exact permissions (replacing the existing ones).
+        rw: Give the group read (r) and write (w) permissions.
+    The -v flag (verbose) will show a confirmation message about the change.
+
+Result:
+
+    Only the group permissions for new_file will be updated.
+    Other permissions (owner and others) will remain unchanged.
+
+* ls -l new_file
+  op:
+  ----rw-rw- 1 user group 6 Jan 28 10:00 new_file
+
+Owner: No permissions (---).
+Group: Read and write permissions (rw-).
+Others: Read and write permissions (rw-).       
+
+  
+* chmod -v 666 new_file
+* cat new_file
+* chmod -v o= new_file
+* chmod -v g-w new_file
+
+
+    chmod 666 sets the permissions of the file new_file to rw-rw-rw- (octal 666).
+        Owner: Read and write (rw-).
+        Group: Read and write (rw-).
+        Others: Read and write (rw-).
+
+Example Output (of chmod -v):
+
+mode of 'new_file' changed from ----rw-rw- to rw-rw-rw-
+
+Permissions after this command:
+
+rw-rw-rw- 1 user group 6 Jan 28 10:00 new_file
+
+2. Command:
+
+cat new_file
+
+Explanation:
+
+    This displays the contents of the file new_file.
+    Since the file still has read permissions for the owner, group, and others (from chmod 666), you can read the file without issues.
+
+Example Output (if the file contains "hello"):
+
+hello
+
+3. Command:
+
+chmod -v o= new_file
+
+Explanation:
+
+    o= removes all permissions for others.
+        o= means "set permissions for others to nothing."
+    After this, others cannot read, write, or execute the file.
+
+Example Output (of chmod -v):
+
+mode of 'new_file' changed from rw-rw-rw- to rw-rw----
+
+Permissions after this command:
+
+rw-rw---- 1 user group 6 Jan 28 10:00 new_file
+
+    Owner: Read and write (rw-).
+    Group: Read and write (rw-).
+    Others: No permissions (---).
+
+4. Command:
+
+chmod -v g-w new_file
+
+Explanation:
+
+    g-w removes the write permission from the group.
+    After this, the group can only read the file.
+
+Example Output (of chmod -v):
+
+mode of 'new_file' changed from rw-rw---- to rw-r-----
+
+Permissions after this command:
+
+rw-r----- 1 user group 6 Jan 28 10:00 new_file
+
+    Owner: Read and write (rw-).
+    Group: Read only (r--).
+    Others: No permissions (---).
+    
+## advanced permissions using symbols
+umask 7
+umask 
+0007
+
+mkdir -p upper/{d1,d2}  
+tree upper
+
+touch upper/d1/file1
+ls -lR upper/
+chmod -vR a+X upper
+  
+ 
+ 
+1. Command:
+
+umask 7
+umask
+
+Explanation:
+
+    umask 7 sets the umask value to 0007.
+        A umask subtracts permissions from the default system permissions when creating new files or directories.
+        0007 means others (o) and the group (g) will have no permissions by default. Only the owner will get full permissions.
+
+Default permissions for new files/directories with umask 7:
+
+    Files: 666 (rw-rw-rw-) - 007 = 660 (rw-rw----)
+    Directories: 777 (rwxrwxrwx) - 007 = 770 (rwxrwx---)
+
+Example Output:
+
+$ umask 7
+$ umask
+0007
+
+2. Command:
+
+mkdir -p upper/{d1,d2}
+tree upper
+
+Explanation:
+
+    mkdir -p upper/{d1,d2}:
+        Creates a directory called upper with two subdirectories d1 and d2.
+        The -p option ensures that intermediate directories are created if they don’t exist.
+
+    tree upper:
+        Displays the directory structure of upper and its contents.
+
+Example Output:
+
+$ mkdir -p upper/{d1,d2}
+$ tree upper
+upper
+├── d1
+└── d2
+
+3. Command:
+
+touch upper/d1/file1
+ls -lR upper/
+
+Explanation:
+
+    touch upper/d1/file1:
+        Creates an empty file file1 inside the d1 subdirectory of upper.
+
+    ls -lR upper/:
+        Lists the contents of the upper directory recursively, showing details of all files and directories.
+
+Example Output:
+
+$ touch upper/d1/file1
+$ ls -lR upper/
+upper/:
+total 8
+drwxrwx--- 2 user group 4096 Jan 28 10:00 d1
+drwxrwx--- 2 user group 4096 Jan 28 10:00 d2
+
+upper/d1:
+total 0
+-rw-rw---- 1 user group 0 Jan 28 10:00 file1
+
+upper/d2:
+total 0    
+
+chmod -vR a+X upper
+
+ Run chmod -vR a+X upper/
+
+chmod -vR a+X upper/
+
+This command does the following:
+
+    -v shows the changes made.
+    -R applies the change recursively to all files and directories inside upper/.
+    a+X adds execute permissions to:
+        directories (because you need execute permission to enter them).
+        files that already have execute permission.
+        
+        
+##
+touch another_newfile
+
+ls -l another_newfile
+-rw-rw---- 1 antony antony 0 Jan 29 00:37 another_newfile
+here others permissions are blocked 
+
+chmod -v +x another_newfile
+mode of 'another_newfile' changed from 0660 (rw-rw----) to 0770 (rwxrwx---)
+
+
+
+chmod -v a+x another_newfile
+
+mode of 'another_newfile' changed from 0770 (rwxrwx---) to 0771 (rwxrwx--x)
+
+##
+* owenership of a file can be controlled with chown and chgrp commands
+
+cat new_file
+op:hello
+chmod 006 new_file
+cat new_file
+permission denied
+ls -l new_file
+-------rw- 1 vagrant vagrant 29 jan 25 1543 new_file
+chown root new_file 
+sudo !!
+ls -l new_file
+-------rw- 1 root vagrant 29 jan 25 1543 new_file
+cat new_file
+permission denied
+id
+sudo chgrp sudo new_file
+ls -l new_file
+-------rw- 1 root sudo 6 29 jan 25 15.43 new_file
+cat new_file
+hello
+id
+uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant)
+
+##
+The minimum permissions for a file and a directory in Linux depend on the basic operations that you need to perform with them.
+1. Minimum Permission for a File:
+
+For a file, the minimum permissions required for basic access are:
+
+    Read (r) permission: Allows the file to be viewed or read.
+    Write (w) permission: Allows modifying the file.
+    Execute (x) permission: Allows running the file if it's a script or a program.
+
+At a minimum, for a file, you typically need read (r) permission to access its content. If you want to modify it, you need write (w) permission. If you want to execute it (if it's a script or a program), you need execute (x) permission.
+Minimum file permissions:
+
+    For a regular file: rw- (read and write) or r-- (read-only).
+        rw- (Read and write permission for the owner, but no permissions for group and others): rw-------.
+        r-- (Read permission for the owner, but no permissions for group and others): r--------.
+
+2. Minimum Permission for a Directory:
+
+For a directory, the minimum permissions needed for basic usage are:
+
+    Read (r) permission: Allows listing the contents of the directory (i.e., seeing the files inside it).
+    Execute (x) permission: Allows entering the directory (using cd) and accessing the files inside it.
+    Write (w) permission: Allows adding, removing, or renaming files within the directory.
+
+For a directory to be useful, at least execute (x) permission is required to access the directory and enter it.
+Minimum directory permissions:
+
+    For the owner to access and use the directory: r-x (read and execute permissions).
+    For the directory to be accessible by others: You need execute permission for the group and others to be able to enter the directory.
+        r-x (read and execute for the owner and group): r-xr-xr-x.
+
+Summary of Minimum Permissions:
+
+    File:
+        Minimum read-only access: r-- (read-only for the owner).
+        Minimum writable access: rw- (read-write for the owner).
+
+    Directory:
+        Minimum access to enter: --x (execute for others, no read).
+        Minimum for the owner to read and enter: r-x (read and execute).
+
+In short, the minimum for a directory is r-x (for the owner), and the minimum for a file is r-- (for read-only access).
+
+## 
+
+sudo mkdir -m 751 /shared
+ls -ld /shared
+drwxr-x--x 2 root root 4096 Jan 29 15:54 /shared
+* here root comes as owner and group bcz of sudo
+cd /shared/
+ls
+permission denied
+
+sudo vim /shared/file1
+enter : this is a file
+
+sudo ls -l
+-rw-r--r-- 1 root root 15 Jan 29 16:02 file1
+
+cat file1
+this is a file
+
+cd 
+cat /shared/file1
+this is a file
+##
+How umask Works:
+
+The umask value subtracts permissions from the default permissions. It is a 3-digit value, where each digit corresponds to user, group, and others respectively.
+
+    umask 022: This means:
+        Owner: Subtract 0 from the default permissions (so the owner gets rw-).
+        Group: Subtract 2 from the default permissions (so the group gets r--).
+        Others: Subtract 2 from the default permissions (so others get r--).
+
+So, with a umask of 022, the default permissions when creating files will be 644 (rw-r--r--) and directories will have 755 (rwxr-xr-x).
+What does umask 007 do?
+
+    Owner: Subtract 0 (no change to default permissions).
+    Group: Subtract 0 (no change to default permissions).
+    Others: Subtract 7 (removes read, write, and execute permissions for others).
+
+So, umask 007 would result in the following default permissions:
+
+    Files: rw-rw---- (owner and group have read-write permissions, others have no permissions).
+    Directories: rwxrwx--- (owner and group have full permissions, others have no permissions).
+
+In Summary:
+
+    A typical umask for a Linux terminal is 022, which results in files having rw-r--r-- permissions and directories having rwxr-xr-x.
+    umask 007 is less common and restricts access for "others" completely, leaving only the owner and group with full access.
+
+        
     
