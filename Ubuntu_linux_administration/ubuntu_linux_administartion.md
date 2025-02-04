@@ -2386,5 +2386,449 @@ In Summary:
     A typical umask for a Linux terminal is 022, which results in files having rw-r--r-- permissions and directories having rwxr-xr-x.
     umask 007 is less common and restricts access for "others" completely, leaving only the owner and group with full access.
 
+##searching for a content
+
+* ls -ltr
+
+The command ls -ltr is a combination of options used with the ls command to list files and directories in a specific way. Here's what each option does:
+
+    -l: Long listing format – This option shows detailed information about each file or directory, such as permissions, number of links, owner, group, size, and the last modified date.
+    -t: Sort by modification time – This option sorts the files and directories by their last modification time, with the most recently modified files appearing last.
+    -r: Reverse order – This option reverses the order of the files. In combination with -t, it will show the most recently modified files first (in reverse order, meaning oldest files come last).
+   
+   
+   op:
         
+  $ ls -ltr
+-rw-r--r-- 1 antony antony  324 Jan 28 16:02 file3
+-rw-r--r-- 1 antony antony  567 Jan 29 11:14 file2
+-rw-r--r-- 1 antony antony  896 Jan 29 12:56 file1
+
+
+* ls -lhSr
+
+-S: Sort by file size – This option sorts the files and directories by their size, with the largest files appearing first.
+
+-r: Reverse order – This option reverses the sorting order. If used with -S, it will list the files from the smallest to the largest.
+
+op:
+
+-S: Sort by file size – This option sorts the files and directories by their size, with the largest files appearing first.
+
+-r: Reverse order – This option reverses the sorting order. If used with -S, it will list the files from the smallest to the largest.
+
+
+* find -type f -name '*.html'
+
+find: This is the command used to search for files and directories in a directory hierarchy.
+
+-type f: This option specifies that you want to find files (not directories). The f stands for "file." This ensures that only files will be included in the search results, excluding directories, symbolic links, etc.
+
+-name '*.html': This option specifies the name pattern to match. In this case, it will look for files with the .html extension.
+
+    The * is a wildcard that matches any string of characters, so this will match any file ending with .html.
+    For example, it will match files like index.html, about.html, contact.html, etc.
+
+op:
+
+./index.html
+./pages/about.html
+./contact.html
+
+
+* find /usr/share/doc -type f -name '*.html'
+
+    ind: This command is used to search for files and directories in a directory hierarchy.
+
+    /usr/share/doc: This specifies the starting directory for the search. The command will search within the /usr/share/doc directory and all its subdirectories for the specified files.
+
+    -type f: This option tells find to search only for files (not directories, symlinks, or other types).
+
+    -name '*.html': This option restricts the search to files whose name ends with .html. The * is a wildcard that matches any characters before .html.
+
+What this does:
+
+    It will search the /usr/share/doc directory and its subdirectories for files with the .html extension.
     
+    
+op:
+/usr/share/doc/package1/manual.html
+/usr/share/doc/package2/README.html
+
+
+* find /usr/share/doc -type f -name '*.html' -exec cp {} ~/links/ \;
+
+The command find /usr/share/doc -type f -name '*.html' -exec cp {} ~/links/ \; is used to search for .html files in the /usr/share/doc directory (and its subdirectories) and copy them to the ~/links/ directory.
+Breakdown of the command:
+
+    find /usr/share/doc: This tells find to start searching from the /usr/share/doc directory.
+
+    -type f: This restricts the search to files only (ignoring directories, symlinks, etc.).
+
+    -name '*.html': This restricts the search to files whose name ends with .html (e.g., index.html, manual.html, etc.).
+
+    -exec cp {} ~/links/ \;: This part tells find to execute a command for each file it finds. The cp command is used to copy the file:
+        {} is a placeholder that represents the current file found by find.
+        ~/links/ is the destination directory where the file will be copied.
+        \; ends the -exec command.
+
+What happens when you run this command:
+
+    find searches for all .html files inside /usr/share/doc and its subdirectories.
+    For each .html file found, it executes the cp command to copy that file to the ~/links/ directory (which is typically the links folder inside your home directory).
+    If the ~/links/ directory does not exist, the command will fail unless you create it beforehand.
+
+Example:
+
+Let's say you have the following files in /usr/share/doc/:
+
+    /usr/share/doc/package1/manual.html
+    /usr/share/doc/package2/readme.html
+
+If you run the command, these files will be copied to ~/links/, so after the command is executed, ~/links/ will contain:
+
+    manual.html
+    readme.html
+    
+* find -type f -name '*.html' -delete
+    
+ find → Searches for files.
+-type f → Finds only regular files (not directories).
+-name '*.html' → Finds files with a .html extension.
+-delete → Deletes the found files permanently.
+
+*  find / -maxdepth 1 -type l   
+    
+    
+find / → Starts searching from the root directory (/).
+-maxdepth 1 → Limits the search to only the first level (i.e., no subdirectories).
+-type l → Finds only symbolic links (l stands for link).
+
+op:
+
+/bin
+/lib
+/lib64
+/sbin
+
+  
+This means that /bin, /lib, /lib64, and /sbin are symbolic links inside /.
+
+  
+  
+ Understanding -maxdepth 1 in find Command
+
+The -maxdepth option in the find command controls how deep the search goes into directories.
+Example Explanation
+
+When you run:
+
+find / -maxdepth 1 -type l
+
+It means:
+
+    Start searching from the root directory (/).
+    -maxdepth 1 means only check the first level (i.e., the / directory itself).
+    Do not search inside any subdirectories.
+    -type l means look for symbolic links only.
+
+📌 Example:
+
+Let's assume the / directory contains:
+
+/
+├── bin       → symlink to `/usr/bin/`
+├── boot      → regular directory
+├── lib       → symlink to `/usr/lib/`
+├── home      → regular directory
+├── etc       → regular directory
+└── usr       → regular directory
+
+If we run:
+
+find / -maxdepth 1 -type l
+
+Output might be:
+
+/bin
+/lib
+
+This means /bin and /lib are symbolic links, and the command does not check inside /usr/, /etc/, or /home/.
+
+ 
+  
+* sudo nano /etc/hosts
+deleted google entry
+  
+  
+* find /etc -mmin 5
+* find /etc -mmin +5
+* find /etc -mmin -5
+then we can see /etc/hosts
+
+
+The -mmin option in the find command helps to find files based on modification time (in minutes).
+
+Since you edited /etc/hosts (by deleting the Google entry), let's understand how these commands work:
+1️⃣ find /etc -mmin 5 (Exact 5 Minutes Ago)
+
+find /etc -mmin 5
+
+    This searches for files modified exactly 5 minutes ago.
+    It's rare to find files that were modified at that exact minute.
+
+2️⃣ find /etc -mmin +5 (More than 5 Minutes Ago)
+
+find /etc -mmin +5
+
+    This finds files modified more than 5 minutes ago.
+    For example, if a file was modified 10 minutes ago, it will be listed.
+    But if it was just modified 3 minutes ago, it will not be shown.
+
+3️⃣ find /etc -mmin -5 (Less than 5 Minutes Ago)
+
+find /etc -mmin -5
+
+    This finds files modified within the last 5 minutes.
+    Since you just edited /etc/hosts, it should appear in the results.
+    
+    
+* find /etc -mmin -5 -type f
+
+-type f → Limit results to files only (ignores directories).
+
+##
+sudo apt update
+sudo apt install -y mlocate
+locate -S
+locate hosts
+locate -b hosts
+locate -br '^hosts$'
+rm hosts
+locate -br '^hosts$'
+locate -ebr '^hosts$'
+locate -eibr '^hosts$'
+
+##
+sudo apt search python3 
+sudo apt search python3 | wc -l
+sudo apt search python3 --names-only | wc -l
+sudo apt search '^python3' --names-only | wc -l
+sudo apt search '^python3$' --names-only | wc -l
+sudo apt search '^python3$' --names-only
+
+wc -l /etc/ssh/sshd_config
+grep '^#' /etc/ssh/sshd_config
+grep -v '^#' /etc/ssh/sshd_config
+grep -vE '^(#|$)' /etc/ssh/sshd_config
+grep password /etc/ssh/sshd_config
+grep -i password /etc/ssh/sshd_config
+grep -i '^password' /etc/ssh/sshd_config
+grep 'yes$' /etc/ssh/sshd_config
+grep '^#.*yes$' /etc/ssh/sshd_config
+grep '^[^#].*yes$' /etc/ssh/sshd_config
+
+
+##
+
+passwd --help
+find --help
+man find
+man passwd
+man 5 passwd
+man man
+ls /usr/share/doc
+
+
+## archieving tools and linux
+
+man tar
+sudo du -sh /etc
+sudo tar -cf etc.tar /etc
+ls -lh etc.tar
+tar -tf etc.tar
+tar -xf etc.tar
+ls
+cd etc
+pwd
+sudo rm /etc/hosts
+cat /etc/hosts
+sudo tar -xf ~vagrant/etc.tar etc/hosts
+!ca 
+cat /etc/hosts
+
+##
+cd -
+cd ls -lh
+can see etc.tar
+gzip etc.tar
+ls -lh
+can see etc.tar.gz
+gunzip etc.tar.gz
+ls -lh
+can see etc.tar
+
+bzip2 etc.tar
+ls -lh
+can see etc.tar.bz2
+bunzip2 etc.tar.bz2
+xz -z etc.tar
+ls -lh
+can see etc.tar.xz
+unxz etc.tar.xz
+ls -lh
+can see etc.tar
+
+##
+sudo -i 
+time tar -cf etc.tar /etc
+time tar -czf etc.tar.gz /etc
+time tar -cjf etc.tar.bz2 /etc
+time tar -cJf etc.tar.xz /etc
+
+ls -lh
+tar -cJf doc.tar.xz /usr/share/doc &> /dev/null &
+ps
+
+##
+find /usr/share/doc -type f -name '*.html' | cpio -ov > backup.cpio
+mkdir restore && cd restore
+ls
+cpio -idv --no-absolute-filenames < ~/backup.cpio
+ls
+tree
+
+
+## elevating user previlages
+
+su
+asking password, not know thw password
+sudo passwd root
+new passoword:
+retype password:
+password successfully updated
+su
+give the new password we have set .we switched to root user
+
+su command in Linux stands for "substitute user" or "switch user". It allows you to switch to another user account, typically to the root user, to perform administrative tasks.
+
+
+id
+
+The id command in Linux is used to display the user ID (UID) and group ID (GID) of the current user or a specified user.
+
+ps
+
+The ps command in Linux is used to display information about running processes on the system.
+
+
+op:
+  PID TTY          TIME CMD
+ 1234 pts/0    00:00:00 bash
+ 5678 pts/0    00:00:00 ps
+
+
+    PID: Process ID (Unique ID assigned to each process)
+    TTY: Terminal (TTY) name where the process is running (pts/1 means a pseudo-terminal session)
+    TIME: CPU time used by the process (both are 00:00:00, meaning they haven't used much CPU)
+    CMD: Command that started the process
+
+What These Processes Mean
+
+    bash (PID 26439)
+        This is your terminal shell (Bash), which you are currently using.
+    ps (PID 27956)
+        This is the ps command itself, which you just ran to check running processes.
+        It disappears immediately after execution.
+        
+
+exit
+ is used to exit the su session
+ 
+ * su -l or su -
+ switch to the root user with a login shell
+ 
+  This switches to root and loads the root user's environment (as if you logged in directly).
+It asks for the root password.
+The prompt will change from $ (regular user) to # (root).
+
+
+exit or ctrl+D
+
+to return to your original user
+
+su -l ubuntu
+switch to another user .
+asking password , not know then 
+sudo su - ubuntu
+
+This switches to ubuntu without asking for its password because sudo runs as root.
+It loads the full environment of the ubuntu user (like su -l).
+If you have sudo access, it will only ask for your own password (not ubuntu's password).
+
+id 
+Running the id command in Linux shows information about your user ID (UID), group ID (GID), and groups the ubuntu user belong to.
+
+exit 
+we can exit from ubuntu user
+
+man su
+
+sudo passwd -l root
+op:
+passwd: password expiry information changed
+
+       
+The output passwd: password expiry information changed indicates that the root password has been locked successfully. However, this message is just a confirmation that the system has updated the password expiry information for the root account, which includes locking the password.
+What Happens After Locking the Root Account:
+
+    The root user's password is disabled, meaning the root account cannot be used to log in directly (via su or login).
+    This is typically done to prevent direct root access, increasing system security by forcing users to access administrative privileges through sudo.
+
+What You Can Do Next:
+
+    Verify if the root account is locked:
+    Run the following command to check the account status:
+
+sudo passwd -S root
+
+Output might look like this:
+
+root LK 2025-01-30 0 99999 7 -1 (Locked)
+
+    LK: Means locked.
+    If it's PS, the account is unlocked.
+
+To Unlock the Root Account:
+If you want to unlock the root account again (allow login), use:
+
+sudo passwd -u root
+
+
+
+* sudo su -l:
+
+    You will not need the root password since sudo allows you to run the command with root privileges.
+    You will be switched to the root user, even if the root account is locked, because sudo gives you the necessary permission to run su as root.
+    The root account is still locked (it doesn't get unlocked by sudo su -l), but the sudo access lets you temporarily become the root user.
+
+
+##
+sudo -l
+
+##
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
